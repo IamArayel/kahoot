@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/kahoot/static/css/main.0729eccc.css",
-    "main.js": "/kahoot/static/js/main.a7242458.js",
+    "main.css": "/kahoot/static/css/main.839e8080.css",
+    "main.js": "/kahoot/static/js/main.1d9591de.js",
     "static/js/453.cae44a20.chunk.js": "/kahoot/static/js/453.cae44a20.chunk.js",
     "index.html": "/kahoot/index.html",
-    "main.0729eccc.css.map": "/kahoot/static/css/main.0729eccc.css.map",
-    "main.a7242458.js.map": "/kahoot/static/js/main.a7242458.js.map",
+    "main.839e8080.css.map": "/kahoot/static/css/main.839e8080.css.map",
+    "main.1d9591de.js.map": "/kahoot/static/js/main.1d9591de.js.map",
     "453.cae44a20.chunk.js.map": "/kahoot/static/js/453.cae44a20.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0729eccc.css",
-    "static/js/main.a7242458.js"
+    "static/css/main.839e8080.css",
+    "static/js/main.1d9591de.js"
   ]
 }
