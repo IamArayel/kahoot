@@ -21,28 +21,28 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer }) => {
   };
 
   const getButtonClass = (index) => {
-    if (!answered) return 'btn btn-lg btn-outline';
+    if (!answered) return 'btn btn-lg neumorphic-button bg-white/80 border-none hover:scale-105 transition-all duration-200';
 
     if (index === question.correctAnswer) {
-      return 'btn btn-lg btn-success';
+      return 'btn btn-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white border-none scale-105 animate-bounce-once';
     }
 
     if (index === selectedAnswer) {
-      return 'btn btn-lg btn-error';
+      return 'btn btn-lg bg-gradient-to-r from-red-400 to-pink-500 text-white border-none scale-95';
     }
 
-    return 'btn btn-lg btn-outline opacity-50';
+    return 'btn btn-lg bg-white/50 border-none opacity-50';
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-primary to-secondary p-4">
-      <div className="card w-full max-w-4xl bg-base-100 shadow-xl">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <div className="card w-full max-w-4xl neumorphic bg-white/80 backdrop-blur-sm">
         <div className="card-body">
           <div className="mb-6">
             <ProgressBar current={questionNumber} total={totalQuestions} />
           </div>
 
-          <h2 className="card-title text-3xl mb-8 text-center justify-center">
+          <h2 className="card-title text-3xl mb-8 text-center justify-center font-bold text-gray-800">
             {question.question}
           </h2>
 

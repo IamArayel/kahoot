@@ -19,33 +19,38 @@ const ScoreBoard = ({ score, totalQuestions, onRestart }) => {
   };
 
   return (
-    <div className="hero min-h-screen bg-base-200">
+    <div className="hero min-h-screen">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-5xl font-bold mb-8">Résultats</h1>
+          <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent">
+            Résultats
+          </h1>
 
-          <div className="card bg-base-100 shadow-xl mb-8">
+          <div className="neumorphic bg-white/80 backdrop-blur-sm rounded-3xl p-8 mb-8">
             <div className="card-body">
-              <h2 className={`text-6xl font-bold ${getColor()}`}>
+              <h2 className={`text-6xl font-bold ${getColor()} animate-scale-in`}>
                 {score} / {totalQuestions}
               </h2>
-              <p className="text-2xl mt-4">{percentage}%</p>
-              <p className="text-xl mt-2">{getMessage()}</p>
+              <p className="text-2xl mt-4 font-semibold text-gray-700">{percentage}%</p>
+              <p className="text-xl mt-2 text-gray-600">{getMessage()}</p>
             </div>
           </div>
 
-          <div className="stats shadow mb-6">
-            <div className="stat">
-              <div className="stat-title">Bonnes réponses</div>
-              <div className="stat-value text-success">{score}</div>
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="neumorphic bg-gradient-to-br from-green-100 to-emerald-100 p-6 rounded-2xl">
+              <div className="stat-title text-gray-600">Bonnes réponses</div>
+              <div className="stat-value text-success text-4xl font-bold">{score}</div>
             </div>
-            <div className="stat">
-              <div className="stat-title">Mauvaises réponses</div>
-              <div className="stat-value text-error">{totalQuestions - score}</div>
+            <div className="neumorphic bg-gradient-to-br from-red-100 to-pink-100 p-6 rounded-2xl">
+              <div className="stat-title text-gray-600">Mauvaises réponses</div>
+              <div className="stat-value text-error text-4xl font-bold">{totalQuestions - score}</div>
             </div>
           </div>
 
-          <button className="btn btn-primary btn-lg" onClick={onRestart}>
+          <button
+            className="btn btn-lg neumorphic-button bg-gradient-to-r from-purple-500 to-pink-500 text-white border-none hover:scale-105 transition-transform duration-200"
+            onClick={onRestart}
+          >
             Rejouer
           </button>
         </div>

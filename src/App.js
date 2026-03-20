@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import StartScreen from './components/StartScreen';
 import Question from './components/Question';
 import ScoreBoard from './components/ScoreBoard';
+import AnimatedBackground from './components/AnimatedBackground';
+import MusicPlayer from './components/MusicPlayer';
 import questionsData from './data/questions.json';
 
 function App() {
@@ -35,7 +37,10 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App relative">
+      <AnimatedBackground />
+      <MusicPlayer />
+
       {gameState === 'start' && <StartScreen onStart={handleStart} />}
 
       {gameState === 'playing' && (
