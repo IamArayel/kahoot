@@ -1,32 +1,602 @@
 [
   {
     "id": 1,
-    "question": "Quelle est la capitale de la France ?",
-    "options": ["Paris", "Londres", "Berlin", "Madrid"],
+    "question": "Que signifie HTML ?",
+    "options": ["HyperText Markup Language", "HighText Machine Language", "HyperText Machine Language", "HighText Markup Language"],
     "correctAnswer": 0
   },
   {
     "id": 2,
-    "question": "Combien font 2 + 2 ?",
-    "options": ["3", "4", "5", "6"],
-    "correctAnswer": 1
-  },
-  {
-    "id": 3,
     "question": "Quel est le langage utilisé pour styliser les pages web ?",
     "options": ["HTML", "JavaScript", "CSS", "Python"],
     "correctAnswer": 2
   },
   {
-    "id": 4,
-    "question": "En quelle année a été créé JavaScript ?",
-    "options": ["1995", "2000", "1990", "2005"],
-    "correctAnswer": 0
-  },
-  {
-    "id": 5,
+    "id": 3,
     "question": "Que signifie DOM ?",
     "options": ["Data Object Model", "Document Object Model", "Digital Object Module", "Document Oriented Model"],
     "correctAnswer": 1
+  },
+  {
+    "id": 4,
+    "question": "Quel attribut HTML est utilisé pour définir des styles inline ?",
+    "options": ["class", "style", "css", "design"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 5,
+    "question": "Quelle balise HTML crée un lien hypertexte ?",
+    "options": ["<link>", "<href>", "<a>", "<url>"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 6,
+    "question": "En JavaScript, comment déclare-t-on une variable constante ?",
+    "options": ["var", "let", "const", "static"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 7,
+    "question": "Quelle méthode JavaScript permet de sélectionner un élément par son ID ?",
+    "options": ["getElementById()", "querySelector()", "getElement()", "selectById()"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 8,
+    "question": "Que signifie CSS ?",
+    "options": ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style Sheets", "Colorful Style Sheets"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 9,
+    "question": "Quel protocole est utilisé pour transférer des pages web ?",
+    "options": ["FTP", "SMTP", "HTTP", "SSH"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 10,
+    "question": "Quelle propriété CSS permet de changer la couleur du texte ?",
+    "options": ["text-color", "color", "font-color", "text-style"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 11,
+    "question": "Quel est le port par défaut pour HTTP ?",
+    "options": ["21", "22", "80", "443"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 12,
+    "question": "Que signifie API ?",
+    "options": ["Application Programming Interface", "Advanced Programming Interface", "Application Process Integration", "Automated Programming Interface"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 13,
+    "question": "Quelle méthode HTTP est utilisée pour récupérer des données ?",
+    "options": ["POST", "GET", "PUT", "DELETE"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 14,
+    "question": "En JavaScript, quel opérateur compare valeur ET type ?",
+    "options": ["==", "===", "=", "!="],
+    "correctAnswer": 1
+  },
+  {
+    "id": 15,
+    "question": "Quelle balise HTML5 définit une section de navigation ?",
+    "options": ["<navigation>", "<nav>", "<menu>", "<navbar>"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 16,
+    "question": "Que signifie JSON ?",
+    "options": ["JavaScript Object Notation", "Java Standard Object Notation", "JavaScript Oriented Network", "Java Serialized Object Notation"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 17,
+    "question": "Quel outil permet de gérer les versions d'un projet ?",
+    "options": ["NPM", "Git", "Docker", "Jenkins"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 18,
+    "question": "Quelle commande Git crée un nouveau dépôt local ?",
+    "options": ["git create", "git init", "git new", "git start"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 19,
+    "question": "Que signifie SQL ?",
+    "options": ["Structured Query Language", "Simple Query Language", "Standard Query Language", "System Query Language"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 20,
+    "question": "Quelle commande SQL permet de récupérer des données ?",
+    "options": ["GET", "FETCH", "SELECT", "RETRIEVE"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 21,
+    "question": "Quel framework JavaScript est développé par Facebook ?",
+    "options": ["Angular", "Vue", "React", "Svelte"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 22,
+    "question": "En CSS, quelle unité est relative à la taille de la police ?",
+    "options": ["px", "em", "pt", "cm"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 23,
+    "question": "Que signifie DevOps ?",
+    "options": ["Development Operations", "Developer Optimization", "Deployment Operations", "Development Orchestration"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 24,
+    "question": "Quel outil permet de conteneuriser des applications ?",
+    "options": ["Git", "Jenkins", "Docker", "Ansible"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 25,
+    "question": "Quelle commande npm installe les dépendances d'un projet ?",
+    "options": ["npm get", "npm install", "npm download", "npm add"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 26,
+    "question": "En JavaScript, quelle méthode ajoute un élément à la fin d'un tableau ?",
+    "options": ["add()", "push()", "append()", "insert()"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 27,
+    "question": "Que signifie CRUD ?",
+    "options": ["Create Read Update Delete", "Create Retrieve Update Delete", "Connect Read Upload Delete", "Create Replace Update Delete"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 28,
+    "question": "Quel est le langage de balisage pour les données structurées ?",
+    "options": ["HTML", "CSS", "XML", "JSON"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 29,
+    "question": "En CSS, quelle propriété définit l'espacement extérieur ?",
+    "options": ["padding", "margin", "border", "spacing"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 30,
+    "question": "Quel code HTTP indique une requête réussie ?",
+    "options": ["404", "500", "200", "301"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 31,
+    "question": "Que signifie MVC ?",
+    "options": ["Model View Controller", "Multiple View Container", "Model Virtual Component", "Managed View Controller"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 32,
+    "question": "Quelle balise HTML5 définit un article indépendant ?",
+    "options": ["<section>", "<div>", "<article>", "<content>"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 33,
+    "question": "En JavaScript, comment créer une fonction ?",
+    "options": ["function myFunc()", "def myFunc()", "func myFunc()", "create myFunc()"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 34,
+    "question": "Quel est le port par défaut pour HTTPS ?",
+    "options": ["80", "443", "8080", "3000"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 35,
+    "question": "Que signifie REST ?",
+    "options": ["Representational State Transfer", "Remote State Transfer", "Representational System Transfer", "Resource State Transfer"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 36,
+    "question": "Quelle méthode JavaScript transforme un tableau en chaîne ?",
+    "options": ["toString()", "join()", "concat()", "stringify()"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 37,
+    "question": "En CSS, quelle propriété contrôle la transparence ?",
+    "options": ["visibility", "opacity", "transparent", "alpha"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 38,
+    "question": "Quel langage est principalement utilisé côté serveur ?",
+    "options": ["HTML", "CSS", "JavaScript", "PHP"],
+    "correctAnswer": 3
+  },
+  {
+    "id": 39,
+    "question": "Que fait la commande 'git clone' ?",
+    "options": ["Crée une branche", "Copie un dépôt distant", "Sauvegarde les changements", "Fusionne des branches"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 40,
+    "question": "Quelle balise HTML crée une liste ordonnée ?",
+    "options": ["<ul>", "<ol>", "<list>", "<order>"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 41,
+    "question": "En JavaScript, quelle méthode retire le dernier élément d'un tableau ?",
+    "options": ["pop()", "remove()", "delete()", "shift()"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 42,
+    "question": "Que signifie NPM ?",
+    "options": ["Node Package Manager", "New Package Manager", "Node Program Module", "Network Package Manager"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 43,
+    "question": "Quel sélecteur CSS cible un ID ?",
+    "options": [".", "#", "@", "*"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 44,
+    "question": "En SQL, quelle clause filtre les résultats ?",
+    "options": ["FILTER", "WHERE", "IF", "SELECT"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 45,
+    "question": "Que signifie CI/CD ?",
+    "options": ["Continuous Integration/Continuous Deployment", "Code Integration/Code Deployment", "Central Integration/Central Deployment", "Continuous Installation/Continuous Development"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 46,
+    "question": "Quelle propriété CSS centre le texte horizontalement ?",
+    "options": ["align", "text-align", "center", "horizontal-align"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 47,
+    "question": "En JavaScript, comment écrit-on un commentaire sur une ligne ?",
+    "options": ["<!-- -->", "/* */", "//", "#"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 48,
+    "question": "Quel code HTTP indique une page non trouvée ?",
+    "options": ["200", "301", "404", "500"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 49,
+    "question": "Que fait la méthode JavaScript 'addEventListener()' ?",
+    "options": ["Crée un événement", "Écoute un événement", "Supprime un événement", "Déclenche un événement"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 50,
+    "question": "Quelle balise HTML5 définit un pied de page ?",
+    "options": ["<bottom>", "<footer>", "<foot>", "<end>"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 51,
+    "question": "En CSS, quelle propriété définit l'espacement intérieur ?",
+    "options": ["margin", "padding", "spacing", "inner"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 52,
+    "question": "Que signifie AJAX ?",
+    "options": ["Asynchronous JavaScript and XML", "Advanced JavaScript and XML", "Automated JavaScript and XML", "Asynchronous Java and XML"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 53,
+    "question": "Quelle commande Git enregistre les modifications ?",
+    "options": ["git save", "git commit", "git push", "git record"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 54,
+    "question": "En JavaScript, quel type de données représente vrai/faux ?",
+    "options": ["string", "number", "boolean", "binary"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 55,
+    "question": "Quelle méthode HTTP modifie une ressource existante ?",
+    "options": ["GET", "POST", "PUT", "DELETE"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 56,
+    "question": "Que signifie ORM ?",
+    "options": ["Object Relational Mapping", "Online Resource Manager", "Object Resource Model", "Operational Relational Method"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 57,
+    "question": "En CSS, quelle propriété change la taille de police ?",
+    "options": ["font-size", "text-size", "size", "font-scale"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 58,
+    "question": "Quelle balise HTML crée un champ de saisie ?",
+    "options": ["<input>", "<field>", "<textbox>", "<entry>"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 59,
+    "question": "En JavaScript, que retourne 'typeof []' ?",
+    "options": ["array", "object", "list", "collection"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 60,
+    "question": "Quel outil JavaScript permet de bundler des modules ?",
+    "options": ["NPM", "Webpack", "Git", "Docker"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 61,
+    "question": "Que signifie SPA en développement web ?",
+    "options": ["Single Page Application", "Simple Page Application", "Static Page Application", "Server Page Application"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 62,
+    "question": "En SQL, quelle commande ajoute des données ?",
+    "options": ["ADD", "INSERT", "CREATE", "APPEND"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 63,
+    "question": "Quelle propriété CSS crée une ombre portée ?",
+    "options": ["shadow", "box-shadow", "drop-shadow", "text-shadow"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 64,
+    "question": "En JavaScript, quelle boucle parcourt les propriétés d'un objet ?",
+    "options": ["for", "while", "for...in", "forEach"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 65,
+    "question": "Que fait 'git pull' ?",
+    "options": ["Envoie les modifications", "Récupère et fusionne les modifications", "Crée une branche", "Annule les changements"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 66,
+    "question": "Quelle balise HTML5 définit une vidéo ?",
+    "options": ["<movie>", "<media>", "<video>", "<film>"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 67,
+    "question": "En CSS, comment applique-t-on un style à tous les éléments ?",
+    "options": ["#all", ".all", "*", "all"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 68,
+    "question": "Que signifie IoT ?",
+    "options": ["Internet of Things", "Integration of Tools", "Internet over TCP", "Interface of Technology"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 69,
+    "question": "Quel framework CSS utilise des classes utilitaires ?",
+    "options": ["Bootstrap", "Tailwind CSS", "Foundation", "Bulma"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 70,
+    "question": "En JavaScript, quelle méthode cherche un élément dans un tableau ?",
+    "options": ["search()", "find()", "locate()", "get()"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 71,
+    "question": "Que signifie PWA ?",
+    "options": ["Progressive Web App", "Public Web Application", "Private Web Access", "Portable Web App"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 72,
+    "question": "Quelle commande SQL supprime des données ?",
+    "options": ["REMOVE", "DROP", "DELETE", "ERASE"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 73,
+    "question": "En CSS, quelle unité est relative à la hauteur de la viewport ?",
+    "options": ["vh", "vw", "%", "em"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 74,
+    "question": "Quel langage de template est utilisé dans Angular ?",
+    "options": ["JSX", "Blade", "Handlebars", "Template"],
+    "correctAnswer": 3
+  },
+  {
+    "id": 75,
+    "question": "En JavaScript, que fait 'JSON.parse()' ?",
+    "options": ["Convertit en JSON", "Parse du JSON en objet", "Valide du JSON", "Compresse du JSON"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 76,
+    "question": "Que signifie CORS ?",
+    "options": ["Cross Origin Resource Sharing", "Central Origin Resource System", "Cross Object Reference Sharing", "Code Origin Resource Sharing"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 77,
+    "question": "Quelle propriété CSS rend un élément flexible ?",
+    "options": ["display: flex", "layout: flex", "flex: true", "flexible: yes"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 78,
+    "question": "En Git, que fait 'git branch' ?",
+    "options": ["Crée un commit", "Liste les branches", "Fusionne des branches", "Supprime une branche"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 79,
+    "question": "Quelle balise HTML définit un en-tête de page ?",
+    "options": ["<head>", "<header>", "<top>", "<h1>"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 80,
+    "question": "En JavaScript, que fait 'Array.map()' ?",
+    "options": ["Filtre un tableau", "Transforme chaque élément", "Trie un tableau", "Compte les éléments"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 81,
+    "question": "Que signifie TDD ?",
+    "options": ["Test Driven Development", "Technical Design Document", "Template Data Definition", "Tool Development Design"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 82,
+    "question": "Quel code HTTP indique une redirection permanente ?",
+    "options": ["200", "301", "302", "404"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 83,
+    "question": "En CSS, comment crée-t-on une transition ?",
+    "options": ["animation", "transition", "transform", "effect"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 84,
+    "question": "Quelle méthode JavaScript convertit en minuscules ?",
+    "options": ["toLower()", "toLowerCase()", "lower()", "downCase()"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 85,
+    "question": "Que fait Docker Compose ?",
+    "options": ["Build des images", "Gère plusieurs conteneurs", "Deploy en production", "Compile du code"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 86,
+    "question": "En SQL, quelle clause trie les résultats ?",
+    "options": ["SORT", "ORDER BY", "ARRANGE", "GROUP BY"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 87,
+    "question": "Quelle balise HTML crée un tableau ?",
+    "options": ["<table>", "<grid>", "<data>", "<sheet>"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 88,
+    "question": "En JavaScript, que fait 'console.log()' ?",
+    "options": ["Affiche dans la console", "Enregistre un fichier", "Crée un log", "Débogue le code"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 89,
+    "question": "Que signifie SSL ?",
+    "options": ["Secure Socket Layer", "System Security Layer", "Server Socket Link", "Secure System Login"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 90,
+    "question": "En CSS, quelle propriété change le curseur ?",
+    "options": ["pointer", "cursor", "mouse", "icon"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 91,
+    "question": "Quelle méthode HTTP supprime une ressource ?",
+    "options": ["REMOVE", "DROP", "DELETE", "DESTROY"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 92,
+    "question": "En JavaScript, que fait 'parseInt()' ?",
+    "options": ["Convertit en entier", "Parse du JSON", "Valide un nombre", "Arrondit un nombre"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 93,
+    "question": "Que signifie SEO ?",
+    "options": ["Search Engine Optimization", "System Error Output", "Server Engine Operation", "Site Enhancement Option"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 94,
+    "question": "Quelle commande Git envoie les modifications au dépôt distant ?",
+    "options": ["git send", "git upload", "git push", "git commit"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 95,
+    "question": "En CSS, comment cache-t-on un élément ?",
+    "options": ["display: none", "visible: false", "hide: true", "show: false"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 96,
+    "question": "Que fait 'npm start' généralement ?",
+    "options": ["Installe les dépendances", "Lance l'application", "Build le projet", "Teste le code"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 97,
+    "question": "En JavaScript, quel mot-clé définit une classe ?",
+    "options": ["class", "object", "function", "prototype"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 98,
+    "question": "Que signifie ML en IA ?",
+    "options": ["Machine Learning", "Multiple Layers", "Manual Logic", "Model Language"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 99,
+    "question": "Quelle propriété CSS définit l'ordre d'empilement ?",
+    "options": ["layer", "stack", "z-index", "order"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 100,
+    "question": "En JavaScript, que retourne 'typeof null' ?",
+    "options": ["null", "undefined", "object", "error"],
+    "correctAnswer": 2
   }
 ]
