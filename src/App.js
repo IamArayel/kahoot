@@ -19,7 +19,11 @@ const shuffleArray = (array) => {
 function App() {
   const [gameState, setGameState] = useState('start'); // 'start', 'playing', 'finished'
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  
   const [score, setScore] = useState(0);
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [streak, setStreak] = useState(0);
+  
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [timeLimit, setTimeLimit] = useState(20);
 
@@ -28,14 +32,30 @@ function App() {
     setGameState('playing');
     setCurrentQuestionIndex(0);
     setScore(0);
+    setCorrectAnswers(0);
+    setStreak(0);
     // On mélange toutes les questions puis on en sélectionne seulement 20
     const shuffled = shuffleArray(questionsData);
     setShuffledQuestions(shuffled.slice(0, 20));
   };
 
-  const handleAnswer = (isCorrect) => {
+  const handleAnswer = (isCorrect, timeLeft) => {
     if (isCorrect) {
-      setScore(score + 1);
+      setCorrectAnswers(correctAnswers + 1);
+      
+      // Calcul des points
+      // 1. Points de base (500 pts)
+      const basePoints = 500;
+      // 2. Bonus de rapidité (jusqu'à 500 pts, proportionnel au temps restant)
+      const speedBonus = Math.round((timeLeft / timeLimit) * 500);
+      // 3. Multiplicateur de série (1 + 10% par bonne réponse consécutive)
+      const streakMultiplier = 1 + (streak * 0.1);
+      
+      const pointsEarned = Math.round((basePoints + speedBonus) * streakMultiplier);
+      setScore(score + pointsEarned);
+      setStreak(streak + 1);
+    } else {
+      setStreak(0);
     }
 
     const nextQuestion = currentQuestionIndex + 1;
@@ -50,28 +70,45 @@ function App() {
     setGameState('start');
     setCurrentQuestionIndex(0);
     setScore(0);
+    setCorrectAnswers(0);
+    setStreak(0);
   };
 
   return (
-    <div className="App relative">
+    <div className="App relative min-h-screen">
       <AnimatedBackground />
       <MusicPlayer isPlaying={gameState !== 'start'} />
 
       {gameState === 'start' && <StartScreen onStart={handleStart} />}
 
       {gameState === 'playing' && shuffledQuestions.length > 0 && (
-        <Question
-          question={shuffledQuestions[currentQuestionIndex]}
-          questionNumber={currentQuestionIndex + 1}
-          totalQuestions={shuffledQuestions.length}
-          onAnswer={handleAnswer}
-          timeLimit={timeLimit}
-        />
+        <>
+          {/* Affichage du score et de la série pendant la partie */}
+          <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-50">
+            <div className="neumorphic bg-white/90 backdrop-blur-sm px-6 py-3 rounded-2xl font-bold text-xl text-purple-600 shadow-lg border border-purple-100">
+              Score: {score}
+            </div>
+            {streak >= 3 && (
+              <div className="neumorphic bg-gradient-to-r from-orange-400 to-red-500 px-6 py-2 rounded-2xl font-bold text-lg text-white shadow-lg animate-pulse border border-orange-200">
+                🔥 Série x{streak}
+              </div>
+            )}
+          </div>
+          
+          <Question
+            question={shuffledQuestions[currentQuestionIndex]}
+            questionNumber={currentQuestionIndex + 1}
+            totalQuestions={shuffledQuestions.length}
+            onAnswer={handleAnswer}
+            timeLimit={timeLimit}
+          />
+        </>
       )}
 
       {gameState === 'finished' && (
         <ScoreBoard
           score={score}
+          correctAnswers={correctAnswers}
           totalQuestions={shuffledQuestions.length}
           onRestart={handleRestart}
         />

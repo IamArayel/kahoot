@@ -17,7 +17,7 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
     if (answered) return;
 
     if (timeLeft === 0) {
-      handleAnswer(-1); // -1 means no answer selected
+      handleAnswer(-1, 0); // -1 means no answer selected, 0 time left
       return;
     }
 
@@ -28,16 +28,17 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
     return () => clearInterval(timer);
   }, [timeLeft, answered]);
 
-  const handleAnswer = (index) => {
+  const handleAnswer = (index, forcedTimeLeft = null) => {
     if (answered) return;
 
+    const actualTimeLeft = forcedTimeLeft !== null ? forcedTimeLeft : timeLeft;
     setSelectedAnswer(index);
     setAnswered(true);
 
     const isCorrect = index === question.correctAnswer;
 
     setTimeout(() => {
-      onAnswer(isCorrect);
+      onAnswer(isCorrect, actualTimeLeft);
     }, 1500);
   };
 
@@ -59,7 +60,7 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
   const timeProgress = (timeLeft / timeLimit) * 100;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 pt-16">
       <div className="card w-full max-w-4xl neumorphic bg-white/80 backdrop-blur-sm">
         <div className="card-body">
           <div className="mb-4">
