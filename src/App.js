@@ -98,16 +98,16 @@ function App() {
   };
 
   return (
-    <div className="App relative min-h-screen">
+    <div className="App relative min-h-screen flex flex-col items-center">
       <AnimatedBackground />
       <MusicPlayer isPlaying={gameState !== 'start'} />
 
       {gameState === 'start' && <StartScreen onStart={handleStart} />}
 
       {gameState === 'playing' && shuffledQuestions.length > 0 && (
-        <>
-          {/* Affichage du score et de la série pendant la partie */}
-          <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-50">
+        <div className="w-full flex flex-col items-center pt-16 px-4">
+          {/* Affichage du score et de la série au dessus de la question */}
+          <div className="flex flex-col items-center gap-2 z-10 mb-4">
             <div className="neumorphic bg-white/90 backdrop-blur-sm px-6 py-3 rounded-2xl font-bold text-xl text-purple-600 shadow-lg border border-purple-100">
               Score: {score}
             </div>
@@ -118,14 +118,16 @@ function App() {
             )}
           </div>
           
-          <Question
-            question={shuffledQuestions[currentQuestionIndex]}
-            questionNumber={currentQuestionIndex + 1}
-            totalQuestions={shuffledQuestions.length}
-            onAnswer={handleAnswer}
-            timeLimit={timeLimit}
-          />
-        </>
+          <div className="w-full max-w-4xl -mt-16">
+            <Question
+              question={shuffledQuestions[currentQuestionIndex]}
+              questionNumber={currentQuestionIndex + 1}
+              totalQuestions={shuffledQuestions.length}
+              onAnswer={handleAnswer}
+              timeLimit={timeLimit}
+            />
+          </div>
+        </div>
       )}
 
       {gameState === 'finished' && (
