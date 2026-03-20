@@ -2,6 +2,8 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+// Optionnel mais pratique pour afficher l'IP locale dans la console
+const os = require('os');
 
 const app = express();
 app.use(cors());
@@ -15,7 +17,6 @@ const io = new Server(server, {
 });
 
 // Stockage de l'état des parties en mémoire
-// Dans une vraie application, on utiliserait une base de données (Redis, MongoDB...)
 const games = new Map();
 
 // Fonction utilitaire pour générer un code PIN à 6 chiffres
@@ -27,32 +28,26 @@ io.on('connection', (socket) => {
   console.log(`Un utilisateur s'est connecté : ${socket.id}`);
 
   // --- LOGIQUE DU HOST (Écran Principal) ---
-
-  // L'Host crée une nouvelle partie
   socket.on('createGame', () => {
     let pin = generatePin();
-    
-    // S'assurer que le PIN est unique
     while(games.has(pin)) {
       pin = generatePin();
     }
 
     const newGame = {
       hostId: socket.id,
-      status: 'lobby', // 'lobby', 'playing', 'finished'
+      status: 'lobby',
       players: [],
       currentQuestionIndex: -1,
-      // On stockera ici les réponses en cours si nécessaire
     };
 
     games.set(pin, newGame);
-    socket.join(pin); // Le socket du Host rejoint la room du PIN
+    socket.join(pin);
     
     console.log(`Partie créée par ${socket.id} avec le PIN ${pin}`);
     socket.emit('gameCreated', pin);
   });
 
-  // L'Host démarre la partie
   socket.on('startGame', (pin) => {
     const game = games.get(pin);
     if (game && game.hostId === socket.id) {
@@ -63,7 +58,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // L'Host passe à la question suivante
   socket.on('nextQuestion', (pin, index) => {
     const game = games.get(pin);
     if (game && game.hostId === socket.id) {
@@ -72,7 +66,6 @@ io.on('connection', (socket) => {
     }
   });
 
-  // L'Host termine la partie
   socket.on('endGame', (pin) => {
     const game = games.get(pin);
     if (game && game.hostId === socket.id) {
@@ -81,10 +74,7 @@ io.on('connection', (socket) => {
     }
   });
 
-
   // --- LOGIQUE DES JOUEURS (Smartphones) ---
-
-  // Un joueur rejoint une partie avec un PIN et un pseudo
   socket.on('joinGame', ({ pin, username }) => {
     const game = games.get(pin);
 
@@ -98,14 +88,12 @@ io.on('connection', (socket) => {
       return;
     }
 
-    // Vérifier si le pseudo est déjà pris
     const nameTaken = game.players.some(p => p.username.toLowerCase() === username.toLowerCase());
     if (nameTaken) {
       socket.emit('error', 'Ce pseudo est déjà pris dans cette partie.');
       return;
     }
 
-    // Ajouter le joueur
     const newPlayer = {
       id: socket.id,
       username: username,
@@ -116,19 +104,14 @@ io.on('connection', (socket) => {
     game.players.push(newPlayer);
     socket.join(pin);
 
-    // Confirmer au joueur qu'il est connecté
     socket.emit('joinedGame', { pin, username });
-    
-    // Informer le Host (et les autres) qu'un nouveau joueur est arrivé
     io.to(game.hostId).emit('playerJoined', game.players);
     console.log(`${username} (${socket.id}) a rejoint la partie ${pin}`);
   });
 
-  // Un joueur soumet une réponse
   socket.on('submitAnswer', ({ pin, answerIndex, timeToAnswer }) => {
     const game = games.get(pin);
     if (game && game.status === 'playing') {
-      // On transmet l'info de la réponse uniquement au Host pour qu'il la traite
       const player = game.players.find(p => p.id === socket.id);
       if (player) {
         io.to(game.hostId).emit('playerAnswered', {
@@ -145,10 +128,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log(`Utilisateur déconnecté : ${socket.id}`);
     
-    // Parcourir toutes les parties pour voir où était le joueur ou s'il était Host
     for (const [pin, game] of games.entries()) {
-      
-      // Si c'était l'Host, on ferme la partie (ou on la met en pause)
       if (game.hostId === socket.id) {
         io.to(pin).emit('hostDisconnected');
         games.delete(pin);
@@ -156,13 +136,10 @@ io.on('connection', (socket) => {
         break;
       }
 
-      // Si c'était un joueur, on l'enlève de la liste
       const playerIndex = game.players.findIndex(p => p.id === socket.id);
       if (playerIndex !== -1) {
         const username = game.players[playerIndex].username;
         game.players.splice(playerIndex, 1);
-        
-        // On prévient l'Host de la déconnexion
         io.to(game.hostId).emit('playerLeft', game.players);
         console.log(`${username} a quitté la partie ${pin}`);
       }
@@ -171,6 +148,27 @@ io.on('connection', (socket) => {
 });
 
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`Le serveur Socket.IO tourne sur le port ${PORT}`);
+
+// Fonction pour récupérer l'IP locale (utile pour le log)
+const getLocalIp = () => {
+  const interfaces = os.networkInterfaces();
+  for (const devName in interfaces) {
+    const iface = interfaces[devName];
+    for (let i = 0; i < iface.length; i++) {
+      const alias = iface[i];
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  return 'localhost';
+};
+
+server.listen(PORT, '0.0.0.0', () => {
+  const ip = getLocalIp();
+  console.log(`=========================================`);
+  console.log(`🚀 Le serveur Socket.IO est lancé !`);
+  console.log(`👉 Local:   http://localhost:${PORT}`);
+  console.log(`📱 Réseau:  http://${ip}:${PORT}`);
+  console.log(`=========================================`);
 });
