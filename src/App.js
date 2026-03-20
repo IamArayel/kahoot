@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StartScreen from './components/StartScreen';
 import Question from './components/Question';
 import ScoreBoard from './components/ScoreBoard';
@@ -27,6 +27,14 @@ function App() {
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
   const [timeLimit, setTimeLimit] = useState(20);
 
+  // État pour stocker les questions qui n'ont pas encore été jouées
+  const [availableQuestions, setAvailableQuestions] = useState([]);
+
+  // Initialiser les questions disponibles au premier chargement
+  useEffect(() => {
+    setAvailableQuestions(questionsData);
+  }, []);
+
   const handleStart = (selectedTimeLimit) => {
     setTimeLimit(selectedTimeLimit || 20);
     setGameState('playing');
@@ -34,9 +42,24 @@ function App() {
     setScore(0);
     setCorrectAnswers(0);
     setStreak(0);
-    // On mélange toutes les questions puis on en sélectionne seulement 20
-    const shuffled = shuffleArray(questionsData);
-    setShuffledQuestions(shuffled.slice(0, 20));
+    
+    // S'il n'y a pas assez de questions disponibles pour une partie de 20,
+    // on réinitialise avec toutes les questions.
+    let currentAvailable = availableQuestions;
+    if (currentAvailable.length < 20) {
+      currentAvailable = questionsData;
+    }
+
+    // On mélange les questions disponibles
+    const shuffled = shuffleArray(currentAvailable);
+    
+    // On sélectionne les 20 premières
+    const selectedQuestions = shuffled.slice(0, 20);
+    setShuffledQuestions(selectedQuestions);
+    
+    // On met à jour les questions disponibles en retirant celles qui ont été sélectionnées
+    const remainingQuestions = shuffled.slice(20);
+    setAvailableQuestions(remainingQuestions);
   };
 
   const handleAnswer = (isCorrect, timeLeft) => {
