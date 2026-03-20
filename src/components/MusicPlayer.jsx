@@ -1,21 +1,31 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-const MusicPlayer = () => {
+const MusicPlayer = ({ isPlaying }) => {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = 0.3;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current && isPlaying) {
       audioRef.current.play().catch(error => {
         console.log('Autoplay prevented:', error);
       });
     }
-  }, []);
+  }, [isPlaying]);
 
   const toggleMute = () => {
     if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
+      if (isMuted) {
+        audioRef.current.muted = false;
+        audioRef.current.play();
+      } else {
+        audioRef.current.muted = true;
+      }
       setIsMuted(!isMuted);
     }
   };
@@ -66,10 +76,9 @@ const MusicPlayer = () => {
         )}
       </button>
       <audio ref={audioRef} loop>
-        <source
-          src="https://www.bensound.com/bensound-music/bensound-ukulele.mp3"
-          type="audio/mpeg"
-        />
+        {/* Option 1: Utiliser un fichier local - à placer dans /public/music.mp3 */}
+        <source src="/music.mp3" type="audio/mpeg" />
+        {/* Option 2: Alternative avec un son généré ou sans musique externe */}
       </audio>
     </div>
   );

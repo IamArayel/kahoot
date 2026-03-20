@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="App relative">
       <AnimatedBackground />
-      <MusicPlayer />
+      <MusicPlayer isPlaying={gameState !== 'start'} />
 
       {gameState === 'start' && <StartScreen onStart={handleStart} />}
 
