@@ -68,3 +68,25 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+---
+
+Pour que les téléphones puissent accéder à l'application qui tourne sur l'ordinateur, il faut deux choses :
+1. Que les téléphones et l'ordinateur soient sur la même connexion Wi-Fi.
+2. Que l'application utilise l'adresse IP locale de ton ordinateur sur le réseau (ex: `192.168.1.15`) au lieu de `localhost`.
+
+---
+
+1. Dans le fichier `src/socket.js` : Au lieu d'écrire "en dur" http://localhost:3001, l'application va maintenant regarder quelle est l'adresse dans la barre d'URL du navigateur (window.location.hostname) et utiliser cette même IP pour se connecter au port 3001.
+2. Dans le fichier `server.js`, le serveur Node écoute toutes les adresses IP du réseau (`0.0.0.0`) et un petit script va afficher l'adresse IP exacte dans le terminal quand il sera lancé.
+
+---
+
+   Ce qu'il faut faire maintenant :
+1. Relancer le serveur Node en faisant un Ctrl+C puis `npm run server`. Dans le terminal, il devrait maintenant y avoir quelque chose comme :
+    > `📱 Réseau: http://192.168.1.XX:3001`
+2. S'assurer que React tourne toujours (sur un autre terminal avec `npm start`).
+3. Sur l'écran de l'ordinateur, quand l'écran de l'Hôte s'affiche avec le QR Code : Regarder l'URL dans la barre d'adresse du navigateur. Si elle affiche `localhost:3000`, remplacer le mot `localhost` par l'adresse IP qui s'est affichée dans le terminal (ex: http://192.168.1.XX:3000/host).
+4. Une fois que la page est rechargée avec l'IP locale, un nouveau QR Code va se générer (avec la bonne adresse IP !).
+5. Scanner le QR Code avec chaque téléphone et profiter de la partie !
