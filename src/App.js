@@ -21,8 +21,10 @@ function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [shuffledQuestions, setShuffledQuestions] = useState([]);
+  const [timeLimit, setTimeLimit] = useState(20);
 
-  const handleStart = () => {
+  const handleStart = (selectedTimeLimit) => {
+    setTimeLimit(selectedTimeLimit || 20);
     setGameState('playing');
     setCurrentQuestionIndex(0);
     setScore(0);
@@ -63,6 +65,7 @@ function App() {
           questionNumber={currentQuestionIndex + 1}
           totalQuestions={shuffledQuestions.length}
           onAnswer={handleAnswer}
+          timeLimit={timeLimit}
         />
       )}
 
