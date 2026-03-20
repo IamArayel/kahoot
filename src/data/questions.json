@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "question": "Quelle est la capitale de la France ?",
+    "options": ["Paris", "Londres", "Berlin", "Madrid"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 2,
+    "question": "Combien font 2 + 2 ?",
+    "options": ["3", "4", "5", "6"],
+    "correctAnswer": 1
+  },
+  {
+    "id": 3,
+    "question": "Quel est le langage utilisé pour styliser les pages web ?",
+    "options": ["HTML", "JavaScript", "CSS", "Python"],
+    "correctAnswer": 2
+  },
+  {
+    "id": 4,
+    "question": "En quelle année a été créé JavaScript ?",
+    "options": ["1995", "2000", "1990", "2005"],
+    "correctAnswer": 0
+  },
+  {
+    "id": 5,
+    "question": "Que signifie DOM ?",
+    "options": ["Data Object Model", "Document Object Model", "Digital Object Module", "Document Oriented Model"],
+    "correctAnswer": 1
+  }
+]
