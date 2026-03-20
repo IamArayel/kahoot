@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ProgressBar from './ProgressBar';
 
 const Question = ({ question, questionNumber, totalQuestions, onAnswer }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -37,15 +38,8 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer }) => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-primary to-secondary p-4">
       <div className="card w-full max-w-4xl bg-base-100 shadow-xl">
         <div className="card-body">
-          <div className="flex justify-between items-center mb-4">
-            <div className="badge badge-lg badge-primary">
-              Question {questionNumber} / {totalQuestions}
-            </div>
-            <progress
-              className="progress progress-primary w-56"
-              value={questionNumber}
-              max={totalQuestions}
-            ></progress>
+          <div className="mb-6">
+            <ProgressBar current={questionNumber} total={totalQuestions} />
           </div>
 
           <h2 className="card-title text-3xl mb-8 text-center justify-center">
