@@ -24,7 +24,7 @@ const generatePin = () => {
 };
 
 io.on('connection', (socket) => {
-  console.log('Un utilisateur s\\'est connecté :', socket.id);
+  console.log(`Un utilisateur s'est connecté : ${socket.id}`);
 
   // --- LOGIQUE DU HOST (Écran Principal) ---
 
@@ -89,7 +89,7 @@ io.on('connection', (socket) => {
     const game = games.get(pin);
 
     if (!game) {
-      socket.emit('error', 'Code PIN invalide. La partie n\\'existe pas.');
+      socket.emit('error', "Code PIN invalide. La partie n'existe pas.");
       return;
     }
 
@@ -143,7 +143,7 @@ io.on('connection', (socket) => {
 
   // --- GESTION DES DÉCONNEXIONS ---
   socket.on('disconnect', () => {
-    console.log('Utilisateur déconnecté :', socket.id);
+    console.log(`Utilisateur déconnecté : ${socket.id}`);
     
     // Parcourir toutes les parties pour voir où était le joueur ou s'il était Host
     for (const [pin, game] of games.entries()) {
