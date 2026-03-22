@@ -68,13 +68,13 @@ const HostScreen = () => {
             <div className="bg-white p-4 rounded-xl shadow-lg border-4 border-purple-500">
               {pin && (
                 <QRCodeSVG 
-                  value={`${window.location.origin}/join?pin=${pin}`} 
+                  value={`${window.location.origin}${window.location.pathname}#/join?pin=${pin}`} 
                   size={200}
                   level={"H"}
                 />
               )}
             </div>
-            <p className="mt-4 text-gray-500">Ou allez sur <span className="font-bold">{window.location.host}/join</span></p>
+            <p className="mt-4 text-gray-500">Ou allez sur <span className="font-bold">{window.location.host}{window.location.pathname}#/join</span></p>
           </div>
 
           <div className="flex flex-col items-center">
