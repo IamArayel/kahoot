@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { socket } from '../../socket';
 import { QRCodeSVG } from 'qrcode.react';
-
-// Ici nous migrerons ton ancienne logique de App.js petit à petit
-// Pour l'instant on fait juste l'écran d'attente / Lobby
+import Question from '../Question';
+import questionsData from '../../data/questions.json';
 
 const HostScreen = () => {
   const [pin, setPin] = useState(null);
   const [players, setPlayers] = useState([]);
-  const [gameStarted, setGameStarted] = useState(false);
+  const [gameState, setGameState] = useState('lobby'); // lobby, question, leaderboard, final
+  
+  // États pour le jeu
+  const [questions, setQuestions] = useState([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answersCount, setAnswersCount] = useState(0);
 
   useEffect(() => {
+    // Sélectionner 10 questions aléatoires au montage
+    const shuffled = [...questionsData].sort(() => 0.5 - Math.random());
+    setQuestions(shuffled.slice(0, 20));
+
     // 1. Se connecter au serveur Socket
     socket.connect();
 
@@ -30,6 +38,26 @@ const HostScreen = () => {
       setPlayers(updatedPlayers);
     });
 
+    // Écouter quand un joueur répond
+    socket.on('playerAnswered', ({ playerId, username, answerIndex, timeToAnswer }) => {
+      setAnswersCount((prev) => prev + 1);
+      
+      // Mettre à jour le score du joueur s'il a bon
+      setPlayers((prevPlayers) => {
+        return prevPlayers.map(p => {
+          if (p.id === playerId) {
+            // Logique de score temporaire, on vérifiera la réponse correcte plus tard
+            return {
+              ...p,
+              lastAnswer: answerIndex,
+              lastAnswerTime: timeToAnswer
+            };
+          }
+          return p;
+        });
+      });
+    });
+
     // Nettoyage lors du démontage du composant
     return () => {
       socket.disconnect();
@@ -39,22 +67,177 @@ const HostScreen = () => {
   const startGame = () => {
     if (players.length > 0) {
       socket.emit('startGame', pin);
-      setGameStarted(true);
+      socket.emit('nextQuestion', pin, 0);
+      setGameState('question');
+      setAnswersCount(0);
     } else {
       alert('Il faut au moins un joueur pour démarrer la partie !');
     }
   };
 
-  if (gameStarted) {
+  const handleTimeUpOrAllAnswered = (isCorrect, timeLeft) => {
+    // Cette fonction sera appelée par le composant Question
+    // Soit quand le temps est écoulé, soit (plus tard) si on force la fin
+    
+    // Calculer les scores
+    const currentQuestion = questions[currentQuestionIndex];
+    
+    setPlayers(prevPlayers => {
+      const updatedPlayers = prevPlayers.map(p => {
+        if (p.lastAnswer === currentQuestion.correctAnswer) {
+          // Formule de score basique (1000 max par question, selon la rapidité)
+          const timeBonus = (p.lastAnswerTime / 10) * 500;
+          return {
+            ...p,
+            score: p.score + 500 + Math.round(timeBonus),
+            streak: p.streak + 1
+          };
+        } else {
+          return {
+            ...p,
+            streak: 0
+          };
+        }
+      });
+      
+      // Trier par score
+      return updatedPlayers.sort((a, b) => b.score - a.score);
+    });
+
+    setGameState('leaderboard');
+  };
+
+  const nextQuestion = () => {
+    if (currentQuestionIndex < questions.length - 1) {
+      const nextIndex = currentQuestionIndex + 1;
+      setCurrentQuestionIndex(nextIndex);
+      setAnswersCount(0);
+      
+      // Réinitialiser la dernière réponse des joueurs
+      setPlayers(prev => prev.map(p => ({ ...p, lastAnswer: null })));
+      
+      socket.emit('nextQuestion', pin, nextIndex);
+      setGameState('question');
+    } else {
+      socket.emit('endGame', pin);
+      setGameState('final');
+    }
+  };
+
+  // --- RENDUS CONDITIONNELS SELON L'ÉTAT ---
+
+  if (gameState === 'question' && questions.length > 0) {
+    // On force Question.jsx à finir plus tôt si tout le monde a répondu
+    const allAnswered = answersCount >= players.length && players.length > 0;
+    const currentQuestion = questions[currentQuestionIndex];
+
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-         <h2 className="text-3xl font-bold text-white mb-4">La partie a commencé !</h2>
-         <p className="text-white text-xl">Ici on intégrera ton ancien composant Question avec la gestion des réponses des téléphones.</p>
-         {/* TODO: Intégrer l'ancien flux App.js (Question, Timer, Scores...) */}
+      <div className="w-full">
+        <div className="fixed top-4 right-4 bg-white/80 p-4 rounded-xl shadow-lg z-50">
+          <p className="font-bold text-xl">Réponses: {answersCount} / {players.length}</p>
+        </div>
+        
+        {/* On réutilise l'ancien composant Question (on le modifie un peu via les props) */}
+        <Question
+          question={currentQuestion}
+          questionNumber={currentQuestionIndex + 1}
+          totalQuestions={questions.length}
+          timeLimit={10} // 10 secondes par défaut
+          onAnswer={handleTimeUpOrAllAnswered}
+          forceEnd={allAnswered} // TODO: Modifier Question.jsx pour supporter ça si on veut couper court
+        />
       </div>
     );
   }
 
+  if (gameState === 'leaderboard') {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <h2 className="text-5xl font-bold text-white mb-8">Classement 🏆</h2>
+        
+        <div className="w-full max-w-2xl bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl mb-8">
+          {players.slice(0, 5).map((player, index) => (
+            <div 
+              key={player.id} 
+              className={`flex justify-between items-center p-4 mb-4 rounded-2xl ${
+                index === 0 ? 'bg-yellow-100 border-2 border-yellow-400' : 
+                index === 1 ? 'bg-gray-100 border-2 border-gray-300' :
+                index === 2 ? 'bg-orange-100 border-2 border-orange-300' :
+                'bg-blue-50'
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <span className="text-3xl font-bold text-gray-400">#{index + 1}</span>
+                <span className="text-2xl font-bold text-gray-800">{player.username}</span>
+                {player.streak >= 3 && <span className="text-xl" title="En feu !">🔥 x{player.streak}</span>}
+              </div>
+              <span className="text-3xl font-black text-purple-600">{player.score}</span>
+            </div>
+          ))}
+        </div>
+
+        <button 
+          onClick={nextQuestion}
+          className="btn btn-lg bg-blue-500 hover:bg-blue-600 text-white border-none shadow-xl px-12 text-2xl"
+        >
+          {currentQuestionIndex < questions.length - 1 ? 'Question Suivante ➡️' : 'Voir le Podium Final 🏆'}
+        </button>
+      </div>
+    );
+  }
+
+  if (gameState === 'final') {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+         <h1 className="text-6xl font-black text-white mb-12 animate-bounce">Podium Final 🎉</h1>
+         
+         <div className="flex items-end justify-center gap-4 h-[400px]">
+            {/* 2ème place */}
+            {players[1] && (
+              <div className="flex flex-col items-center animate-slide-up">
+                <div className="text-2xl font-bold text-white mb-2">{players[1].username}</div>
+                <div className="text-xl text-white/80 mb-2">{players[1].score} pts</div>
+                <div className="w-32 h-48 bg-gray-300 rounded-t-lg flex justify-center pt-4 shadow-2xl border-t-4 border-gray-400">
+                  <span className="text-4xl font-bold text-gray-500">2</span>
+                </div>
+              </div>
+            )}
+
+            {/* 1ère place */}
+            {players[0] && (
+              <div className="flex flex-col items-center z-10 animate-slide-up" style={{ animationDelay: '0.2s' }}>
+                <div className="text-4xl">👑</div>
+                <div className="text-3xl font-bold text-white mb-2">{players[0].username}</div>
+                <div className="text-2xl text-white/80 mb-2 font-bold">{players[0].score} pts</div>
+                <div className="w-40 h-64 bg-yellow-400 rounded-t-lg flex justify-center pt-4 shadow-2xl border-t-4 border-yellow-500">
+                  <span className="text-5xl font-black text-yellow-600">1</span>
+                </div>
+              </div>
+            )}
+
+            {/* 3ème place */}
+            {players[2] && (
+              <div className="flex flex-col items-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
+                <div className="text-2xl font-bold text-white mb-2">{players[2].username}</div>
+                <div className="text-xl text-white/80 mb-2">{players[2].score} pts</div>
+                <div className="w-32 h-36 bg-orange-400 rounded-t-lg flex justify-center pt-4 shadow-2xl border-t-4 border-orange-500">
+                  <span className="text-4xl font-bold text-orange-600">3</span>
+                </div>
+              </div>
+            )}
+         </div>
+
+         <button 
+           onClick={() => window.location.reload()}
+           className="mt-16 btn btn-lg bg-white text-purple-600 border-none shadow-xl hover:scale-105"
+         >
+           Créer une nouvelle partie
+         </button>
+      </div>
+    );
+  }
+
+  // --- LOBBY (Par défaut) ---
   return (
     <div className="flex flex-col items-center min-h-screen pt-10">
       <div className="w-full max-w-4xl p-8 neumorphic bg-white/80 backdrop-blur-sm rounded-3xl text-center">
