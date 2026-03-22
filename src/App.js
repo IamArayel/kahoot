@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import AnimatedBackground from './components/AnimatedBackground';
 
 // On va créer ces composants dans les prochaines étapes
@@ -9,7 +9,7 @@ import Home from './components/Home';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="App relative min-h-screen flex flex-col items-center">
         <AnimatedBackground />
         
@@ -24,7 +24,7 @@ function App() {
           <Route path="/join" element={<PlayerScreen />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
