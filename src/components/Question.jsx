@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ProgressBar from './ProgressBar';
 
-const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimit }) => {
+const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimit, forceEnd }) => {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [answered, setAnswered] = useState(false);
   const [timeLeft, setTimeLeft] = useState(timeLimit);
@@ -16,8 +16,8 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
   useEffect(() => {
     if (answered) return;
 
-    if (timeLeft === 0) {
-      handleAnswer(-1, 0); // -1 means no answer selected, 0 time left
+    if (timeLeft === 0 || forceEnd) {
+      handleAnswer(-1, timeLeft); // -1 means no answer selected directly on screen, time left passed
       return;
     }
 
@@ -26,7 +26,7 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, answered]);
+  }, [timeLeft, answered, forceEnd]);
 
   const handleAnswer = (index, forcedTimeLeft = null) => {
     if (answered) return;
@@ -87,8 +87,7 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
               <button
                 key={index}
                 className={getButtonClass(index)}
-                onClick={() => handleAnswer(index)}
-                disabled={answered}
+                disabled={true} // Sur le grand écran, on ne clique plus, ce sont les téléphones qui envoient les réponses !
               >
                 {option}
               </button>
