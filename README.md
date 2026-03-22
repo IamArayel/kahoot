@@ -90,3 +90,17 @@ Pour que les téléphones puissent accéder à l'application qui tourne sur l'or
 3. Sur l'écran de l'ordinateur, quand l'écran de l'Hôte s'affiche avec le QR Code : Regarder l'URL dans la barre d'adresse du navigateur. Si elle affiche `localhost:3000`, remplacer le mot `localhost` par l'adresse IP qui s'est affichée dans le terminal (ex: http://192.168.1.XX:3000/host).
 4. Une fois que la page est rechargée avec l'IP locale, un nouveau QR Code va se générer (avec la bonne adresse IP !).
 5. Scanner le QR Code avec chaque téléphone et profiter de la partie !
+
+---
+
+## Pourquoi je ne peux pas jouer depuis la page Github.io :
+> 1. Le problème de la page vierge : le routage sur GitHub Pages dans `src/App.js`, vous utilisiez BrowserRouter. Lorsqu'on déploie une application React sur GitHub Pages (comme configuré dans votre package.json), BrowserRouter pose souvent problème car le serveur statique de GitHub ne sait pas comment gérer les chemins comme /host (il cherche un vrai dossier "host", ne le trouve pas, et renvoie une erreur ou une page blanche). J'ai donc remplacé BrowserRouter par HashRouter dans src/App.js. Cela va rajouter un # dans l'URL (ex: https://IamArayel.github.io/kahoot/#/host), ce qui est parfaitement compatible avec les hébergements statiques !
+> 2. Le problème du serveur manquant : Où tourne `server.js` ? Vous hébergez le site React sur GitHub Pages (grâce au script "deploy": "gh-pages -d build"). Cependant, GitHub Pages ne peut héberger que des fichiers statiques (HTML, CSS, JS de React). Il ne peut pas exécuter du code Node.js, ce qui veut dire que votre fichier server.js n'est pas déployé ni exécuté.
+> 
+> Pour que votre partie multijoueur fonctionne en ligne, vous devez séparer le frontend et le backend :
+> 1. Frontend : Reste sur GitHub Pages.
+> 2. Backend (Serveur Socket.IO) : Doit être hébergé sur une plateforme gratuite capable de faire tourner Node.js, comme Render, Railway, Fly.io ou Koyeb.
+> 
+> J'ai préparé le terrain dans src/socket.js. Une fois que vous aurez déployé `server.js` sur Render (ou autre), vous obtiendrez une URL (par exemple https://mon-kahoot.onrender.com). Il vous suffira de :
+> 1. Remplacer const PROD_URL = undefined; par votre vraie URL dans src/socket.js.
+> 2. Relancer le build et le déploiement de votre site (avec npm run deploy).
