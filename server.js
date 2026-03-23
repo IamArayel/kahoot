@@ -39,6 +39,7 @@ io.on('connection', (socket) => {
       status: 'lobby',
       players: [],
       currentQuestionIndex: -1,
+      questionStartTime: null // Nouveau champ pour le chrono côté serveur
     };
 
     games.set(pin, newGame);
@@ -62,6 +63,7 @@ io.on('connection', (socket) => {
     const game = games.get(pin);
     if (game && game.hostId === socket.id) {
       game.currentQuestionIndex = index;
+      game.questionStartTime = Date.now(); // On enregistre le moment où la question est affichée
       io.to(pin).emit('newQuestion', index);
     }
   });
@@ -109,11 +111,18 @@ io.on('connection', (socket) => {
     console.log(`${username} (${socket.id}) a rejoint la partie ${pin}`);
   });
 
-  socket.on('submitAnswer', ({ pin, answerIndex, timeToAnswer }) => {
+  socket.on('submitAnswer', ({ pin, answerIndex }) => {
     const game = games.get(pin);
     if (game && game.status === 'playing') {
       const player = game.players.find(p => p.id === socket.id);
       if (player) {
+        // Calcul du temps mis pour répondre côté serveur
+        let timeToAnswer = 0;
+        if (game.questionStartTime) {
+          const timeElapsed = (Date.now() - game.questionStartTime) / 1000;
+          timeToAnswer = Math.max(0, 20 - timeElapsed); // Temps restant sur 20s (pas moins de 0)
+        }
+        
         io.to(game.hostId).emit('playerAnswered', {
           playerId: socket.id,
           username: player.username,

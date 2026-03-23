@@ -55,8 +55,8 @@ const PlayerScreen = () => {
   const submitAnswer = (index) => {
     if (answered) return;
     setAnswered(true);
-    // On envoie le temps fictif de 1 pour l'instant (il faudra le synchroniser)
-    socket.emit('submitAnswer', { pin, answerIndex: index, timeToAnswer: 10 }); // TODO: send real time
+    // Le serveur calcule maintenant le temps de réponse automatiquement
+    socket.emit('submitAnswer', { pin, answerIndex: index });
   };
 
   if (!joined) {
