@@ -7,7 +7,7 @@ import questionsData from '../../data/questions.json';
 const HostScreen = () => {
   const [pin, setPin] = useState(null);
   const [players, setPlayers] = useState([]);
-  const [gameState, setGameState] = useState('lobby'); // lobby, question, leaderboard, final
+  const [gameState, setGameState] = useState('lobby'); // lobby, get_ready, question, leaderboard, final
   
   // États pour le jeu
   const [questions, setQuestions] = useState([]);
@@ -15,7 +15,7 @@ const HostScreen = () => {
   const [answersCount, setAnswersCount] = useState(0);
 
   useEffect(() => {
-    // Sélectionner 10 questions aléatoires au montage
+    // Sélectionner 20 questions aléatoires au montage
     const shuffled = [...questionsData].sort(() => 0.5 - Math.random());
     setQuestions(shuffled.slice(0, 20));
 
@@ -64,12 +64,23 @@ const HostScreen = () => {
     };
   }, []);
 
+  // Gérer l'écran de chargement / Préparez-vous
+  useEffect(() => {
+    if (gameState === 'get_ready') {
+      const timer = setTimeout(() => {
+        socket.emit('nextQuestion', pin, currentQuestionIndex);
+        setGameState('question');
+        setAnswersCount(0);
+      }, 5000); // 5 secondes pour lire la question avant que les réponses apparaissent
+      
+      return () => clearTimeout(timer);
+    }
+  }, [gameState, currentQuestionIndex, pin]);
+
   const startGame = () => {
     if (players.length > 0) {
       socket.emit('startGame', pin);
-      socket.emit('nextQuestion', pin, 0);
-      setGameState('question');
-      setAnswersCount(0);
+      setGameState('get_ready');
     } else {
       alert('Il faut au moins un joueur pour démarrer la partie !');
     }
@@ -111,13 +122,11 @@ const HostScreen = () => {
     if (currentQuestionIndex < questions.length - 1) {
       const nextIndex = currentQuestionIndex + 1;
       setCurrentQuestionIndex(nextIndex);
-      setAnswersCount(0);
       
       // Réinitialiser la dernière réponse des joueurs
       setPlayers(prev => prev.map(p => ({ ...p, lastAnswer: null })));
       
-      socket.emit('nextQuestion', pin, nextIndex);
-      setGameState('question');
+      setGameState('get_ready');
     } else {
       socket.emit('endGame', pin);
       setGameState('final');
@@ -125,6 +134,24 @@ const HostScreen = () => {
   };
 
   // --- RENDUS CONDITIONNELS SELON L'ÉTAT ---
+
+  if (gameState === 'get_ready' && questions.length > 0) {
+    const currentQuestion = questions[currentQuestionIndex];
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+        <h2 className="text-3xl font-bold text-white mb-4 animate-bounce">Préparez-vous !</h2>
+        <div className="w-full max-w-4xl p-12 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl animate-scale-in">
+          <span className="text-xl font-bold text-purple-500 mb-4 block">Question {currentQuestionIndex + 1}</span>
+          <h1 className="text-5xl font-black text-gray-800 leading-tight">
+            {currentQuestion.question}
+          </h1>
+          <div className="mt-8">
+            <span className="loading loading-dots loading-lg text-purple-600"></span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (gameState === 'question' && questions.length > 0) {
     // On force Question.jsx à finir plus tôt si tout le monde a répondu
@@ -137,14 +164,13 @@ const HostScreen = () => {
           <p className="font-bold text-xl">Réponses: {answersCount} / {players.length}</p>
         </div>
         
-        {/* On réutilise l'ancien composant Question (on le modifie un peu via les props) */}
         <Question
           question={currentQuestion}
           questionNumber={currentQuestionIndex + 1}
           totalQuestions={questions.length}
           timeLimit={10} // 10 secondes par défaut
           onAnswer={handleTimeUpOrAllAnswered}
-          forceEnd={allAnswered} // TODO: Modifier Question.jsx pour supporter ça si on veut couper court
+          forceEnd={allAnswered}
         />
       </div>
     );
