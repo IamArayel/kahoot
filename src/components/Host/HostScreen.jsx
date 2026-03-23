@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { socket } from '../../socket';
 import { QRCodeSVG } from 'qrcode.react';
 import Question from '../Question';
-import MusicPlayer from '../MusicPlayer';
 import questionsData from '../../data/questions.json';
 
 const HostScreen = () => {
@@ -88,9 +87,6 @@ const HostScreen = () => {
   };
 
   const handleTimeUpOrAllAnswered = (isCorrect, timeLeft) => {
-    // Cette fonction sera appelée par le composant Question
-    // Soit quand le temps est écoulé, soit (plus tard) si on force la fin
-    
     // Calculer les scores
     const currentQuestion = questions[currentQuestionIndex];
     
@@ -136,18 +132,10 @@ const HostScreen = () => {
 
   // --- RENDUS CONDITIONNELS SELON L'ÉTAT ---
 
-  // Wrapper commun pour ajouter la musique sur tous les écrans
-  const withMusic = (content) => (
-    <>
-      <MusicPlayer isPlaying={gameState === 'lobby' || gameState === 'question' || gameState === 'get_ready' || gameState === 'leaderboard' || gameState === 'final'} />
-      {content}
-    </>
-  );
-
   if (gameState === 'get_ready' && questions.length > 0) {
     const currentQuestion = questions[currentQuestionIndex];
-    return withMusic(
-      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center">
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center w-full">
         <h2 className="text-3xl font-bold text-white mb-4 animate-bounce">Préparez-vous !</h2>
         <div className="w-full max-w-4xl p-12 bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl animate-scale-in">
           <span className="text-xl font-bold text-purple-500 mb-4 block">Question {currentQuestionIndex + 1}</span>
@@ -167,7 +155,7 @@ const HostScreen = () => {
     const allAnswered = answersCount >= players.length && players.length > 0;
     const currentQuestion = questions[currentQuestionIndex];
 
-    return withMusic(
+    return (
       <div className="w-full">
         <div className="fixed top-4 right-20 bg-white/80 p-4 rounded-xl shadow-lg z-50">
           <p className="font-bold text-xl">Réponses: {answersCount} / {players.length}</p>
@@ -186,8 +174,8 @@ const HostScreen = () => {
   }
 
   if (gameState === 'leaderboard') {
-    return withMusic(
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 w-full">
         <h2 className="text-5xl font-bold text-white mb-8">Classement 🏆</h2>
         
         <div className="w-full max-w-2xl bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-2xl mb-8">
@@ -222,8 +210,8 @@ const HostScreen = () => {
   }
 
   if (gameState === 'final') {
-    return withMusic(
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen p-4 w-full">
          <h1 className="text-6xl font-black text-white mb-12 animate-bounce">Podium Final 🎉</h1>
          
          <div className="flex items-end justify-center gap-4 h-[400px]">
@@ -273,8 +261,8 @@ const HostScreen = () => {
   }
 
   // --- LOBBY (Par défaut) ---
-  return withMusic(
-    <div className="flex flex-col items-center min-h-screen pt-10">
+  return (
+    <div className="flex flex-col items-center min-h-screen pt-10 w-full">
       <div className="w-full max-w-4xl p-8 neumorphic bg-white/80 backdrop-blur-sm rounded-3xl text-center">
         <h1 className="text-5xl font-bold mb-8 bg-gradient-to-r from-purple-600 via-pink-500 to-blue-500 bg-clip-text text-transparent animate-pulse">
           Rejoignez la partie !
