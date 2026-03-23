@@ -43,17 +43,36 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
   };
 
   const getButtonClass = (index) => {
-    if (!answered) return 'btn btn-lg neumorphic-button bg-white/80 border-none hover:scale-105 transition-all duration-200';
+    // Couleurs de base de type Kahoot
+    const baseColors = [
+      'bg-red-500',    // 0: Triangle rouge
+      'bg-blue-500',   // 1: Losange bleu
+      'bg-yellow-400', // 2: Cercle jaune
+      'bg-green-500'   // 3: Carré vert
+    ];
+
+    if (!answered) return `w-full h-full min-h-[120px] rounded-2xl sm:rounded-3xl shadow-[0_8px_0_rgb(0,0,0,0.2)] flex items-center p-4 text-white text-xl font-bold transition-all duration-200 ${baseColors[index]}`;
 
     if (index === question.correctAnswer) {
-      return 'btn btn-lg bg-gradient-to-r from-green-400 to-emerald-500 text-white border-none scale-105 animate-bounce-once';
+      return `w-full h-full min-h-[120px] rounded-2xl sm:rounded-3xl shadow-[0_8px_0_rgb(0,0,0,0.2)] flex items-center p-4 text-white text-xl font-bold scale-105 animate-bounce-once ${baseColors[index]}`;
     }
 
-    if (index === selectedAnswer) {
-      return 'btn btn-lg bg-gradient-to-r from-red-400 to-pink-500 text-white border-none scale-95';
-    }
+    return `w-full h-full min-h-[120px] rounded-2xl sm:rounded-3xl shadow-[0_8px_0_rgb(0,0,0,0.2)] flex items-center p-4 text-white text-xl font-bold opacity-30 grayscale ${baseColors[index]}`;
+  };
 
-    return 'btn btn-lg bg-white/50 border-none opacity-50';
+  const getShape = (index) => {
+    switch (index) {
+      case 0:
+        return <div className="w-0 h-0 border-l-[20px] border-l-transparent border-b-[35px] border-b-white border-r-[20px] border-r-transparent mr-4 flex-shrink-0"></div>;
+      case 1:
+        return <div className="w-10 h-10 bg-white rotate-45 mr-4 flex-shrink-0"></div>;
+      case 2:
+        return <div className="w-10 h-10 bg-white rounded-full mr-4 flex-shrink-0"></div>;
+      case 3:
+        return <div className="w-9 h-9 bg-white mr-4 flex-shrink-0"></div>;
+      default:
+        return null;
+    }
   };
 
   // Calcul du pourcentage restant pour la barre de temps
@@ -61,7 +80,7 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 pt-16">
-      <div className="card w-full max-w-4xl neumorphic bg-white/80 backdrop-blur-sm">
+      <div className="card w-full max-w-5xl neumorphic bg-white/80 backdrop-blur-sm">
         <div className="card-body">
           <div className="mb-4">
             <ProgressBar current={questionNumber} total={totalQuestions} />
@@ -78,19 +97,19 @@ const Question = ({ question, questionNumber, totalQuestions, onAnswer, timeLimi
             Temps restant : {timeLeft}s
           </div>
 
-          <h2 className="card-title text-3xl mb-8 text-center justify-center font-bold text-gray-800">
+          <h2 className="card-title text-3xl mb-8 text-center justify-center font-bold text-gray-800 bg-white p-8 rounded-2xl shadow-sm">
             {question.question}
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
             {question.options.map((option, index) => (
-              <button
+              <div
                 key={index}
                 className={getButtonClass(index)}
-                disabled={true} // Sur le grand écran, on ne clique plus, ce sont les téléphones qui envoient les réponses !
               >
-                {option}
-              </button>
+                {getShape(index)}
+                <span className="flex-1 text-left break-words drop-shadow-md">{option}</span>
+              </div>
             ))}
           </div>
         </div>
