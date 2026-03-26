@@ -1,6 +1,32 @@
-# Getting Started with Create React App
+### Directory tree
+```css
+src/
+├── components/
+│   ├── Host/
+│   │   └── HostScreen.jsx
+│   ├── Player/
+│   │   └── PlayerScreen.jsx
+│   ├── AnimatedBackground.jsx
+│   ├── Home.jsx
+│   ├── MusicPlayer.jsx
+│   ├── ProgressBar.jsx
+│   ├── Question.jsx
+│   ├── ScoreBoard.jsx
+│   └── StartScreen.jsx
+├── data/
+│   └── questions.json
+├── App.css
+├── App.js
+├── App.test.js
+├── index.css
+├── index.js
+├── logo.svg
+├── reportWebVitals.js
+├── setupTests.js
+└── socket.js
+```
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting Started with Create React App
 
 ## Available Scripts
 
@@ -68,6 +94,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
 
 
 ---
