@@ -55,8 +55,8 @@ const PlayerScreen = () => {
   const submitAnswer = (index) => {
     if (answered) return;
     setAnswered(true);
-    // On envoie le temps fictif de 1 pour l'instant (il faudra le synchroniser)
-    socket.emit('submitAnswer', { pin, answerIndex: index, timeToAnswer: 1 });
+    // Le serveur calcule maintenant le temps de réponse automatiquement
+    socket.emit('submitAnswer', { pin, answerIndex: index });
   };
 
   if (!joined) {
@@ -83,7 +83,7 @@ const PlayerScreen = () => {
                 placeholder="123456"
                 className="input input-bordered input-lg w-full bg-white/50 text-center tracking-widest font-mono text-2xl"
                 value={pin}
-                onChange={(e) => setPin(e.target.value.replace(/\\D/g, '').slice(0, 6))} // Accepte que les chiffres
+                onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 6))} // Accepte que les chiffres
                 required
               />
             </div>

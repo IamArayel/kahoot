@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import AnimatedBackground from './components/AnimatedBackground';
+import MusicPlayer from './components/MusicPlayer';
 
-// On va créer ces composants dans les prochaines étapes
 import HostScreen from './components/Host/HostScreen';
 import PlayerScreen from './components/Player/PlayerScreen';
 import Home from './components/Home';
 
 function App() {
+  const [userInteracted, setUserInteracted] = useState(false);
+
+  // Gérer la première interaction utilisateur pour autoriser l'autoplay audio
+  const handleInteraction = () => {
+    if (!userInteracted) {
+      setUserInteracted(true);
+    }
+  };
+
   return (
-    <HashRouter>
-      <div className="App relative min-h-screen flex flex-col items-center">
+    <div onClick={handleInteraction} className="App relative min-h-screen flex flex-col items-center">
+      <HashRouter>
         <AnimatedBackground />
         
+        {/* Le MusicPlayer est maintenant global pour toutes les pages */}
+        <MusicPlayer isPlaying={userInteracted} />
+
         <Routes>
           {/* Écran d'accueil pour choisir si on host ou on joue */}
           <Route path="/" element={<Home />} />
@@ -23,8 +35,8 @@ function App() {
           {/* L'interface pour les joueurs sur leur téléphone */}
           <Route path="/join" element={<PlayerScreen />} />
         </Routes>
-      </div>
-    </HashRouter>
+      </HashRouter>
+    </div>
   );
 }
 

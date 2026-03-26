@@ -1,40 +1,42 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 const MusicPlayer = ({ isPlaying }) => {
-  const [isMuted, setIsMuted] = useState(false);
+  // On met le son en muet par défaut
+  const [isMuted, setIsMuted] = useState(true);
   const audioRef = useRef(null);
 
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = 0.3;
+      // Optionnel mais force le lecteur audio HTML5 à être muet au démarrage
+      audioRef.current.muted = true;
     }
   }, []);
 
   useEffect(() => {
-    if (audioRef.current && isPlaying) {
+    if (audioRef.current && isPlaying && !isMuted) {
+      audioRef.current.muted = false;
       audioRef.current.play().catch(error => {
         console.log('Autoplay prevented:', error);
       });
+    } else if (audioRef.current && (!isPlaying || isMuted)) {
+      audioRef.current.muted = true;
+      audioRef.current.pause();
     }
-  }, [isPlaying]);
+  }, [isPlaying, isMuted]);
 
   const toggleMute = () => {
-    if (audioRef.current) {
-      if (isMuted) {
-        audioRef.current.muted = false;
-        audioRef.current.play();
-      } else {
-        audioRef.current.muted = true;
-      }
-      setIsMuted(!isMuted);
-    }
+    setIsMuted(!isMuted);
   };
 
   return (
     <div className="fixed top-4 right-4 z-50">
       <button
-        onClick={toggleMute}
-        className="btn btn-circle btn-lg neumorphic hover:scale-110 transition-transform duration-200"
+        onClick={(e) => {
+          e.stopPropagation(); // Évite de déclencher le onClick global de l'App
+          toggleMute();
+        }}
+        className={`btn btn-circle btn-lg neumorphic hover:scale-110 transition-transform duration-200 ${!isMuted ? 'bg-purple-100 text-purple-600' : ''}`}
         aria-label={isMuted ? 'Unmute' : 'Mute'}
       >
         {isMuted ? (
@@ -76,9 +78,7 @@ const MusicPlayer = ({ isPlaying }) => {
         )}
       </button>
       <audio ref={audioRef} loop>
-        {/* Option 1: Utiliser un fichier local - à placer dans /public/music.mp3 */}
-        <source src="/music.mp3" type="audio/mpeg" />
-        {/* Option 2: Alternative avec un son généré ou sans musique externe */}
+        <source src={`${process.env.PUBLIC_URL}/music.mp3`} type="audio/mpeg" />
       </audio>
     </div>
   );
