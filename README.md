@@ -1,5 +1,5 @@
 ### Directory tree
-```css
+```text
 src/
 ├── components/
 │   ├── Host/
